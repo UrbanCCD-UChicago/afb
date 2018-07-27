@@ -1,0 +1,30 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <div class="form-group">
+    <%= label f, :name, class: "control-label" %>
+    <%= text_input f, :name, class: "form-control", id: "name", required: true %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :slug, class: "control-label" %>
+    <%= text_input f, :slug, class: "form-control", id: "slug" %>
+    <%= error_tag f, :slug %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :source_url, class: "control-label" %>
+    <%= text_input f, :source_url, class: "form-control", required: true %>
+    <%= error_tag f, :source_url %>
+  </div>
+
+  <div class="form-group">
+    <input type="submit" value="Submit" class="btn btn-success">
+  </div>
+<% end %>
+
+<script>
+document.getElementById('name').addEventListener('keyup', function () {
+  let slug = this.value.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+  document.getElementById('slug').value = slug;
+})
+</script>

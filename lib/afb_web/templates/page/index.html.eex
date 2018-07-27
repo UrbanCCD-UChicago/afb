@@ -1,0 +1,59 @@
+<div class="jumbotron">
+  <img src="/images/logo.png" class="img-responsive">
+</div>
+
+<div class="row marketing">
+  <div class="col-md-12">
+    <h2>Array of Things File Browser</h2>
+
+    <p>
+      This site provides early access to Array of Things data via bulk download.
+      During the installation and break-in period for the next several months
+      nodes may also undergo maintenance, causing gaps in data.
+    </p>
+
+    <p>
+      As with most scientific data sets, many of these files will be too large to
+      open in a standard desktop spreadsheet. The team is finalizing a new set of
+      APIs to facilitate hosting the data in friendly portals such as
+      <a href="https://plenar.io/" target="_blank">Plenar.io</a>
+      and <a href="https://opengrid.io/" target="_blank">OpenGrid.io</a>
+      and we plan to provide them in the coming weeks.
+    </p>
+
+    <p>
+      During the next several months the AoT team and collaborators are analyzing
+      each sensor stream in order to provide metadata regarding its use, including
+      accuracy and precision. Air quality sensor data streams are also being
+      calibrated through both controlled testing and collocation with regulatory
+      instruments operated by federal, state, and/or local agencies. This calibration
+      and evaluation process will require several months of test data.
+    </p>
+
+    <p>
+      As each sensor stream evaluation process completes, data from those sensors
+      as well as any relevant metadata will be added to <em>Public</em> data sets.
+    </p>
+
+    <p>
+      We also provide bulk download of all sensor data for individuals who are
+      interested in participating in the evaluation and characterization of the
+      data from the <em>Complete</em> data sets. Users of this raw data should consult the
+      <a href="https://arrayofthings.github.io/node.html" target="_blank">sensor
+      data sheets</a> and are advised to await the completion of our evaluation
+      process prior to using the data for scientific, policy, or operational
+      decisions.
+    </p>
+
+    <p>
+      Data is owned by the University of Chicago and provided as is under the
+      <a href="http://plenar.io/terms" target="_blank">Plenario data terms</a>.
+    </p>
+
+    <p>
+      Thanks for your interest in this research project! Follow
+      <a href="https://twitter.com/arrayofthings" target="_blank">@ArrayofThings
+      on Twitter</a> for updates.
+    </p>
+  </div>
+</div>

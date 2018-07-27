@@ -1,0 +1,38 @@
+<div class="container">
+  <%= if @conn.assigns.current_user do %>
+  <div class="row">
+    <%= link "New Data Set", to: data_set_path(@conn, :new), class: "btn btn-success" %>
+  </div>
+  <% end %>
+
+  <div class="row">
+    <p>
+      Below is the list of available AoT and Waggle Enabled Device Data Sets.
+    </p>
+
+    <p>
+      As each sensor stream evaluation process completes, data from those sensors
+      as well as any relevant metadata will be added to <em>Public</em> data sets.
+    </p>
+
+    <p>
+      We also provide bulk download of all sensor data for individuals who are
+      interested in participating in the evaluation and characterization of the
+      data from the <em>Complete</em> data sets. Users of this raw data should consult the
+      <a href="https://arrayofthings.github.io/node.html" target="_blank">sensor
+      data sheets</a> and are advised to await the completion of our evaluation
+      process prior to using the data for scientific, policy, or operational
+      decisions.
+    </p>
+  </div>
+
+  <div class="row">
+    <ul>
+      <%= for ds <- @data_sets do %>
+      <li>
+        <%= link ds.name, to: data_set_path(@conn, :show, ds) %>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

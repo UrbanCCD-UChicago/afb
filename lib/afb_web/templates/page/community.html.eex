@@ -1,0 +1,37 @@
+<div class="jumbotron">
+  <h1>Community Tools</h1>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <p>
+      The following list of tools are provided <em>as is</em> &mdash; that is
+      they have been offered by collaborators, colleagues, students, researchers
+      and community members as a means to examine Array of Things data. We make
+      no guarantee for them. They are there for your review, usage and modification
+      (as permitted where license is granted).
+    </p>
+
+    <p>
+      If you would like to contribute a tool, please send us an email at
+      <a href="mailto:plenario@uchicago.edu">plenario@uchicago.edu</a>.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <ul>
+      <li>
+        <a href="https://github.com/waggle-sensor/beehive-server/tree/master/publishing-tools/utils/data_manipulator" target="_blank">
+          wg_datatool: Waggle CSV Data Manipulation Tool
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/waggle-sensor/data-tools" target="_blank">
+          Waggle Data Tools: A suite of tools to slice and dice data set tarballs
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

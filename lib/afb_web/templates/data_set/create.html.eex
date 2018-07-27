@@ -1,0 +1,7 @@
+<div class="container">
+  <h2 class="h2">
+    Create a new Data Set
+  </h2>
+
+  <%= render AfbWeb.DataSetView, "_form.html", assigns %>
+</div>

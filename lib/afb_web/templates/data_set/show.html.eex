@@ -1,0 +1,197 @@
+<div class="container">
+  <h1 class="h1">
+    <%= @data_set.name %>
+    <%= if @conn.assigns.current_user do %>
+    <%= button "Delete", to: data_set_path(@conn, :delete, @data_set), method: :delete, class: "btn btn-danger pull-right float-right", onclick: "return confirmDelete()" %>
+    <%= link "Edit", to: data_set_path(@conn, :edit, @data_set), class: "btn btn-success pull-right float-right", style: "margin-right:20px" %>
+    <% end %>
+    <%= link "Back to all Data Sets", to: data_set_path(@conn, :index), class: "btn btn-info pull-right float-right", style: "margin-right:20px" %>
+  </h1>
+
+  <div class="row">
+    <em>This data set was last updated on <%= @data_set.updated_at %></em>
+  </div>
+
+  <h3 class="h3">
+    Data Set Provenance
+  </h3>
+
+  <div class="row">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Source</th>
+          <td>
+            <%= link @data_set.source_url, to: @data_set.source_url, target: "_blank" %>
+          </td>
+        </tr>
+        <tr>
+          <th>Data Starts On</th>
+          <td><%= @data_set.data_start_date || "-" %></td>
+        </tr>
+        <tr>
+          <th>Data Ends On</th>
+          <td><%= @data_set.data_end_date || "-" %></td>
+        </tr>
+        <tr>
+          <th>Latest Data Tarball Created On</th>
+          <td><%= @data_set.latest_creation_date || "-" %></td>
+        </tr>
+        <tr>
+          <th>Data Tarball Format Version</th>
+          <td><%= @data_set.latest_data_format_version || "-" %></td>
+        </tr>
+        <tr>
+          <th>All Metadata</th>
+          <td>
+            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.metadata.tar", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.metadata.tar", target: "_blank" %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h3">
+    Data Set Slice Downloads
+  </h3>
+
+  <div class="row">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Past 24 Hours</th>
+          <td>
+            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-day.csv.gz", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-day.csv.gz", target: "_blank" %>
+            <br><span class="small">Refreshes every day.</span>
+          </td>
+        </tr>
+        <tr>
+          <th>Past Week</th>
+          <td>
+            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-week.csv.gz", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-week.csv.gz", target: "_blank" %>
+            <br><span class="small">Refreshes every Sunday.</span>
+          </td>
+        </tr>
+        <tr>
+          <th>Past 2 Weeks</th>
+          <td>
+            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.2-weeks.csv.gz", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.2-weeks.csv.gz", target: "_blank" %>
+            <br><span class="small">Refreshes every other Sunday.</span>
+          </td>
+        </tr>
+        <tr>
+          <th>Past Month</th>
+          <td>
+            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-month.csv.gz", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-month.csv.gz", target: "_blank" %>
+            <br><span class="small">Refreshes every first of the month.</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h3">
+    Node Information
+    <%= link "Download", to: data_set_path(@conn, :download_nodes_csv, @data_set), class: "btn btn-success pull-right float-right" %>
+    <button id="node-info-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Table</button>
+  </h3>
+
+  <div class="row col-12 table-responsive" id="node-info" hidden>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <%= for h <- @node_headers do %>
+          <th><%= h %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for row <- @node_body do %>
+        <tr>
+          <%= for cell <- row do %>
+          <td><%= cell %></td>
+          <% end %>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h3">
+    Sensor Information
+    <%= link "Download", to: data_set_path(@conn, :download_sensors_csv, @data_set), class: "btn btn-success pull-right float-right" %>
+    <button id="sensor-info-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Table</button>
+  </h3>
+
+  <div class="row col-12 table-responsive" id="sensor-info" hidden>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <%= for h <- @sensor_headers do %>
+          <th><%= h %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for row <- @sensor_body do %>
+        <tr>
+          <%= for cell <- row do %>
+          <td nowrap><%= cell %></td>
+          <% end %>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h3">
+    Tarball README File
+    <%= link "Download", to: data_set_path(@conn, :download_readme, @data_set), class: "btn btn-success pull-right float-right" %>
+    <button id="readme-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Contents</button>
+  </h3>
+
+  <div class="row" id="readme" hidden>
+    <pre style="background:#dfefef;padding:10px;">
+      <%= @data_set.readme %>
+    </pre>
+  </div>
+</div>
+
+<script>
+const confirmDelete = function () {
+  return confirm("Are you sure you want to delete <%= @data_set.name %>?");
+}
+
+document.getElementById('node-info-btn').addEventListener('click', function () {
+  let nodeInfo = document.getElementById('node-info');
+  if (nodeInfo.hidden) {
+    nodeInfo.hidden = false;
+    this.innerHTML = 'Hide Table';
+  } else {
+    nodeInfo.hidden = true;
+    this.innerHTML = 'Show Table';
+  }
+});
+
+document.getElementById('sensor-info-btn').addEventListener('click', function () {
+  let sensorInfo = document.getElementById('sensor-info');
+  if (sensorInfo.hidden) {
+    sensorInfo.hidden = false;
+    this.innerHTML = 'Hide Table';
+  } else {
+    sensorInfo.hidden = true;
+    this.innerHTML = 'Show Table';
+  }
+});
+
+document.getElementById('readme-btn').addEventListener('click', function () {
+  let readme = document.getElementById('readme');
+  if (readme.hidden) {
+    readme.hidden = false;
+    this.innerHTML = 'Hide Contents';
+  } else {
+    readme.hidden = true;
+    this.innerHTML = 'Show Contents';
+  }
+});
+</script>

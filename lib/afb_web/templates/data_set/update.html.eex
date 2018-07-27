@@ -1,0 +1,8 @@
+<div class="container">
+  <h2 class="h2">
+    Update <%= @data_set.name %>
+    <%= link "Cancel", to: data_set_path(@conn, :show, @data_set), class: "btn btn-danger pull-right" %>
+  </h2>
+
+  <%= render AfbWeb.DataSetView, "_form.html", assigns %>
+</div>
