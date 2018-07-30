@@ -4,8 +4,8 @@ defmodule Afb.Mixfile do
   def project do
     [
       app: :afb,
-      version: "0.0.1",
-      elixir: "~> 1.4",
+      version: "0.1.0",
+      elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
@@ -58,6 +58,10 @@ defmodule Afb.Mixfile do
       # data
       {:csv, "~> 2.1"},
       {:timex, "~> 3.3"},
+
+      # deployments
+      {:distillery, "~> 1.5"},
+      {:sentry, "~> 6.2.1"},
     ]
   end
 
