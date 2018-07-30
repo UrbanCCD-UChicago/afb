@@ -76,7 +76,7 @@ python3 $slice_tool "$workdir/$extraction" $starts $ends
 
 echo "renaming the output of the slice"
 dirname="${extraction::-1}.from-$starts-to-$ends"
-renamed="$slug.1-week.csv.gz"
+renamed="$slug.2-weeks.csv.gz"
 echo "rename=$renamed"
 mv $dirname/data.csv.gz $renamed
 
