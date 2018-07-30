@@ -2,6 +2,13 @@
 
 # set -ex
 
+echo ""
+echo ""
+echo "################################"
+echo "#        Weekly Slice          #"
+echo "# $(date) #"
+echo "################################"
+
 POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
@@ -37,39 +44,50 @@ set -- "${POSITIONAL[@]}"
 
 pwd=`pwd`
 
+echo "dataset=$dataset"
+echo "slug=$slug"
+echo "workdir=$workdir"
+echo "slice_tool=$slice_tool"
+echo "afb_host=$afb_host"
+echo "pwd=$pwd"
+
 cd $workdir
 
-# download the big tarball from the mcs server
-wget http://www.mcs.anl.gov/research/projects/waggle/downloads/datasets/$dataset.latest.tar
+echo "downloading the big tarball from the mcs server"
+wget --quiet http://www.mcs.anl.gov/research/projects/waggle/downloads/datasets/$dataset.latest.tar
 
-# get the name of the directory in the tarball
+echo "getting the name of the directory in the tarball"
 ext_lines=`tar -tf $dataset.latest.tar`
 readarray -t ext_arr <<< "$ext_lines"
 extraction="${ext_arr[0]}"
+echo "extraction=$extraction"
 
-# decompress tarball
+echo "decompressing the tarball"
 tar xf $dataset.latest.tar
 
-# set slicing start and end dates
+echo "setting start and end dates to build slice"
 starts=`date --date="7 days ago" +"%Y-%m-%d"`
 ends=`date +"%Y-%m-%d"`
+echo "starts=$starts"
+echo "ends=$ends"
 
-# slice the gzipped data.csv
+echo "slicing the gzipped data.csv"
 python3 $slice_tool "$workdir/$extraction" $starts $ends
 
-# rename the output of the slice
+echo "renaming the output of the slice"
 dirname="${extraction::-1}.from-$starts-to-$ends"
 renamed="$slug.1-week.csv.gz"
+echo "rename=$renamed"
 mv $dirname/data.csv.gz $renamed
 
-# upload the sliced data to s3
-aws s3 cp $renamed s3://aot-tarballs/
+echo "uploading the sliced data to s3"
+aws s3 cp $renamed s3://aot-tarballs/ --quiet
 
-# clean up
-rm -rf $dataset.latest.tar
-rm -rf $extraction
-rm -rf $dirname
-rm -rf $renamed
+echo "cleaning up"
+rm -rf $dataset*
+rm -rf $extraction*
+rm -rf $dirname*
+rm -rf $renamed*
+rm -rf $slug*
 
-# go back to where you started
 cd $pwd
