@@ -30,7 +30,10 @@
               <%= link "Data Sets", to: data_set_path(@conn, :index), class: "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link "Community", to: page_path(@conn, :community), class: "nav-link" %>
+              <%= link "Sensor Status", to: page_path(@conn, :sensor_status), class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link "Community Resources", to: page_path(@conn, :community), class: "nav-link" %>
             </li>
           </ul>
         </div>

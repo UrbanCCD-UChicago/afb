@@ -22,6 +22,7 @@ defmodule AfbWeb.Router do
 
     get "/", PageController, :index
     get "/community", PageController, :community
+    get "/sensor-status", PageController, :sensor_status
 
     get "/login", AuthController, :index
     post "/login", AuthController, :login

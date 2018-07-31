@@ -1,0 +1,170 @@
+<div class="jumbotron">
+  <h1 class="h1">
+    Sensor Status
+  </h1>
+</div>
+
+<!-- MAKE SURE TO UPDATE THIS ROW WHENEVER THE TABLE IS UPDATED! -->
+
+<div class="row col-12">
+  <p>
+    <em>This page was last updated June 24, 2018.</em>
+  </p>
+</div>
+
+<!-- NO SERIOUSLY, DID YOU UPDATE IT? -->
+
+<div class="row col-12">
+  <p>
+    For additional information about sensors, please refer to the data sheets
+    provided at <a href="https://arrayofthings.github.io/node.html" target="_blank">
+    https://arrayofthings.github.io/node.html</a>.
+  </p>
+</div>
+
+<div class="row col-12">
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Measurement</th>
+        <th>Availability Status</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="12" style="background: #e5ffcc;">
+          <strong>Enivornmental</strong>
+        </td>
+      </tr>
+      <tr>
+        <td>Temperature (Ambient)</td>
+        <td>Yes</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Temperature (Internal)</td>
+        <td>Yes</td>
+        <td>Measurement within the processor enclosure (used to monitor operating conditions of the internal electronics and computing devices).</td>
+      </tr>
+      <tr>
+        <td>Relative Humidity (Ambient)</td>
+        <td>Yes</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Relative Humidity (Internal)</td>
+        <td>Yes</td>
+        <td>Measurement within the processor enclosure (used to monitor operating conditions of the internal electronics and computing devices).</td>
+      </tr>
+      <tr>
+        <td>Barometric Pressure</td>
+        <td>Yes</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Light (Ambient)</td>
+        <td>Yes</td>
+        <td>Light sensors face upward through a plexiglass dome.</td>
+      </tr>
+      <tr>
+        <td>Light (Ultraviolet)</td>
+        <td>Yes</td>
+        <td>Light sensors face upward through a plexiglass dome.</td>
+      </tr>
+      <tr>
+        <td>Light (Infrared)</td>
+        <td>Yes</td>
+        <td>Light sensors face upward through a plexiglass dome.</td>
+      </tr>
+      <tr>
+        <td>Sound Pressure</td>
+        <td>Yes</td>
+        <td>Currently average values for each of 10 octave ranges over 30s.  Evaluating algorithms to detect and report peak levels by 4q2018.</td>
+      </tr>
+      <tr>
+        <td>Vibration (Accelerometer)</td>
+        <td>Yes</td>
+        <td>Currently reports x, y, z forces.  Evaluating algorithms to detect and report vibration (variation of x, y, z forces) by 4q2018.</td>
+      </tr>
+      <tr>
+        <td>Magnetic Field</td>
+        <td>Yes</td>
+        <td>Reports x, y, and z values.</td>
+      </tr>
+      <tr>
+        <td rowspan="10" style="background: #e6f3ff;">
+          <strong>Air Quality</strong><br>
+          AQ sensors undergoing ~3 month evaluation using EPA data.
+        </td>
+      </tr>
+      <tr>
+        <td>Carbon Monoxide</td>
+        <td>Yes</td>
+        <td>Sensor evaluation under way.  Expect report in 3q2018.</td>
+      </tr>
+      <tr>
+        <td>Ozone</td>
+        <td>Yes</td>
+        <td>Sensor evaluation under way.  Expect report in 3q2018.</td>
+      </tr>
+      <tr>
+        <td>Sulfur Dioxide</td>
+        <td>Yes</td>
+        <td>Sensor evaluation under way.  Expect report in 3q2018.</td>
+      </tr>
+      <tr>
+        <td>Nitrogen Dioxide</td>
+        <td>Yes</td>
+        <td>Sensor evaluation under way.  Expect report in 3q2018.</td>
+      </tr>
+      <tr>
+        <td>Hydrogen Sulfide</td>
+        <td>Yes</td>
+        <td>Sensor evaluation under way.  Expect report in 3q2018.</td>
+      </tr>
+      <tr>
+        <td>Total Reducing Gases</td>
+        <td>Yes</td>
+        <td>Sensor evaluation under way.  Expect report in 3q2018.</td>
+      </tr>
+      <tr>
+        <td>Total Oxidizing Gases</td>
+        <td>Yes</td>
+        <td>Sensor evaluation under way.  Expect report in 3q2018.</td>
+      </tr>
+      <tr>
+        <td>PM 2.5</td>
+        <td>Limited Test Units</td>
+        <td>Evaluating multiple sensors for deploymnent in 100 units in 4q2018.</td>
+      </tr>
+      <tr>
+        <td>PM 10</td>
+        <td>Limited Test Units</td>
+        <td>Evaluating multiple sensors for deploymnent in 100 units in 4q2018.</td>
+      </tr>
+      <tr>
+        <td rowspan="4" style="background: #f9e6ff;">
+          <strong>Image Processing</strong><br>
+          Image processing algorithms will be validated throughout summer.
+        </td>
+      </tr>
+      <tr>
+        <td>Pedestrian Count</td>
+        <td>Not Available</td>
+        <td>Evaluating algorithms for initial test availability 4q2018.</td>
+      </tr>
+      <tr>
+        <td>Flooding</td>
+        <td>Not Available</td>
+        <td>Evaluating algorithms for initial test availability 4q2018.</td>
+      </tr>
+      <tr>
+        <td>Vehicle Count</td>
+        <td>Not Available</td>
+        <td>Evaluating algorithms for initial test availability 4q2018.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

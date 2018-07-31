@@ -1,38 +1,53 @@
-<div class="container">
-  <%= if @conn.assigns.current_user do %>
-  <div class="row">
-    <%= link "New Data Set", to: data_set_path(@conn, :new), class: "btn btn-success" %>
-  </div>
-  <% end %>
+<div class="jumbotron">
+  <h1 class="h1">
+    Data Sets
+  </h1>
+</div>
 
-  <div class="row">
-    <p>
-      Below is the list of available AoT and Waggle Enabled Device Data Sets.
-    </p>
+<%= if @conn.assigns.current_user do %>
+<div class="row col-12">
+  <%= link "New Data Set", to: data_set_path(@conn, :new), class: "btn btn-success" %>
+</div>
+<% end %>
 
-    <p>
-      As each sensor stream evaluation process completes, data from those sensors
-      as well as any relevant metadata will be added to <em>Public</em> data sets.
-    </p>
+<div class="row col-12">
+  <p>
+    Below is the list of available Array of Things network data sets.
+  </p>
 
-    <p>
-      We also provide bulk download of all sensor data for individuals who are
-      interested in participating in the evaluation and characterization of the
-      data from the <em>Complete</em> data sets. Users of this raw data should consult the
-      <a href="https://arrayofthings.github.io/node.html" target="_blank">sensor
-      data sheets</a> and are advised to await the completion of our evaluation
-      process prior to using the data for scientific, policy, or operational
-      decisions.
-    </p>
-  </div>
+  <p>
+    Data sets are segmented into two categories: <em>Complete</em> and
+    <em>Public</em>. Complete data sets include measurements for all sensors
+    onboard a given node. Some of these measurements have been evaluated and
+    calibrated for accuracy; others are still in the process of being fully
+    analyzed. As each sensor stream evaluation process completes, data from
+    those sensors as well as any relevant metadata will be added to the
+    public version of the data sets.
+  </p>
 
-  <div class="row">
-    <ul>
-      <%= for ds <- @data_sets do %>
-      <li>
-        <%= link ds.name, to: data_set_path(@conn, :show, ds) %>
-      </li>
-      <% end %>
-    </ul>
-  </div>
+  <p>
+    Availability and evaluation status of sensor boards and measurements can
+    be tracked on the
+    <%= link "Sensor Status page", to: page_path(@conn, :sensor_status) %>.
+    As the evaluation process moves forward, the data on this page will be
+    updated.
+  </p>
+
+  <p>
+    Users of the complete data sets should consult the
+    <a href="https://arrayofthings.github.io/node.html" target="_blank">sensor
+    data sheets</a> and are advised to await the completion of our evaluation
+    process prior to using the data for scientific, policy, or operational
+    decisions.
+  </p>
+</div>
+
+<div class="row col-12">
+  <ul>
+    <%= for ds <- @data_sets do %>
+    <li>
+      <%= link ds.name, to: data_set_path(@conn, :show, ds) %>
+    </li>
+    <% end %>
+  </ul>
 </div>
