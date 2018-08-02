@@ -1,13 +1,74 @@
 defmodule Afb do
-
   require Logger
 
-  alias Afb.DataSet.DataSet
+  import Ecto.Query
+
+  alias Afb.Repo
+
+  alias Afb.DataSet.{
+    DataSet,
+    Slice
+  }
 
   @bucket "aot-tarballs"
 
-  def process_s3_archive(data_set) do
-    tempfile = download_tarball_from_s3("#{data_set.slug}.metadata.tar")
+  def process_bucket(%DataSet{} = ds) do
+    list_s3(ds.slug)
+    |> Enum.map(& parse_s3_object(&1, ds))
+  end
+
+  defp list_s3(slug) do
+    Logger.info("Scanning S3 for prefix #{slug}")
+
+    %{body: %{contents: objects}} =
+      ExAws.S3.list_objects(@bucket, prefix: slug)
+      |> ExAws.request!()
+
+    objects
+  end
+
+  defp parse_s3_object(%{key: key, last_modified: mod, size: size}, ds) do
+    Logger.info("Parsing S3 object #{key}")
+
+    %{headers: headers} =
+      ExAws.S3.head_object(@bucket, key)
+      |> ExAws.request!()
+
+    exp_header =
+      Enum.filter(headers, fn {key, _} -> key == "x-amz-expiration" end)
+      |> List.first()
+
+    case exp_header do
+      nil ->
+        :ok
+
+      {_, parse_me} ->
+        # because amazon is so awesome and they totally make every developer's
+        # life a dream by not instituting and then doubling down on totally
+        # shitty ideas, their time strings come back as, and i'm not kidding,
+        # "expiry-date=\"Thu, 09 Aug 2018 00:00:00 GMT\", rule-id=\"daily-ttl\""
+        expiry_date =
+          Regex.scan(~r/\d+ \w+ \d{4} \d{2}\:\d{2}\:\d{2} \w{3}/, parse_me)
+          |> List.flatten()
+          |> List.first()
+          |> Timex.parse!("%d %b %Y %H:%M:%S %Z", :strftime)
+          |> Timex.Timezone.convert("Etc/UTC")
+          |> Timex.to_naive_datetime()
+
+        Slice.create(ds, %{
+          bucket: @bucket,
+          key: key,
+          last_modified: mod,
+          size: size,
+          expiry_date: expiry_date
+        })
+    end
+
+    :ok
+  end
+
+  def process_archive(%DataSet{} = ds, key) do
+    tempfile = download_tarball_from_s3(key)
     dirname = tar_xf_tempfile(tempfile)
 
     readme = read_readme(dirname)
@@ -19,23 +80,19 @@ defmodule Afb do
     data_starts = prov["data_start_date"] |> parse_date()
     data_ends = prov["data_end_date"] |> parse_date()
     data_created = prov["creation_date"] |> parse_date()
-    data_fmt = prov["data_format_version"]
 
-    {:ok, _} = DataSet.update(data_set, %{
+    {:ok, _} = DataSet.update(ds, %{
       readme: readme,
       nodes: nodes,
       sensors: sensors,
       source_url: src_url,
       data_start_date: data_starts,
       data_end_date: data_ends,
-      latest_creation_date: data_created,
-      latest_data_format_version: data_fmt,
+      latest_creation_date: data_created
     })
   end
 
-  defp parse_date(string) do
-    Timex.parse!(string, "%Y/%m/%d %H:%M:%S", :strftime)
-  end
+  defp parse_date(string), do: Timex.parse!(string, "%Y/%m/%d %H:%M:%S", :strftime)
 
   defp download_tarball_from_s3(tarball_name) do
     Logger.info("Downloading tarball from S3...")
@@ -101,33 +158,10 @@ defmodule Afb do
     |> File.read!()
   end
 
-  defp upload_data_csv_to_s3(dirname, data_set_slug) do
-    Logger.info("Uploading retagged data csv to S3...")
-
-    existing_name = "#{dirname}/data.csv"
-    new_name = "#{dirname}/#{data_set_slug}.24h.csv"
-    Logger.debug("Renaming #{inspect(existing_name)} to #{inspect(new_name)}")
-    {"", 0} = System.cmd("mv", [existing_name, new_name])
-    Logger.debug("Rename complete")
-
-    Logger.info("Gzipping #{inspect(new_name)}")
-    {"", 0} = System.cmd("gzip", ["-f", new_name])
-    Logger.debug("Gzip complete")
-
-    gzipped = "#{new_name}.gz"
-    key =
-      gzipped
-      |> String.split("/")
-      |> List.last()
-
-    Logger.debug("Starting upload. src=#{inspect(gzipped)} bucket=#{inspect(@bucket)} key=#{inspect(key)}")
-    {:ok, _} =
-      gzipped
-      |> ExAws.S3.Upload.stream_file()
-      |> ExAws.S3.upload(@bucket, key)
-      |> ExAws.request()
-    Logger.info("Upload complete")
-
-    :ok
+  def purge_old_slices do
+    Slice
+    |> where([s], s.expiry_date < ^NaiveDateTime.utc_now())
+    |> Repo.all()
+    |> Enum.map(&Repo.delete/1)
   end
 end

@@ -1,167 +1,152 @@
-<div class="container">
-  <h1 class="h1">
-    <%= @data_set.name %>
-    <%= if @conn.assigns.current_user do %>
-    <%= button "Delete", to: data_set_path(@conn, :delete, @data_set), method: :delete, class: "btn btn-danger pull-right float-right", onclick: "return confirmDelete()" %>
-    <%= link "Edit", to: data_set_path(@conn, :edit, @data_set), class: "btn btn-success pull-right float-right", style: "margin-right:20px" %>
-    <% end %>
-    <%= link "Back to all Data Sets", to: data_set_path(@conn, :index), class: "btn btn-info pull-right float-right", style: "margin-right:20px" %>
-  </h1>
+<h1 class="h1">
+  <%= @data_set.name %>
+  <%= link "Back to all Data Sets", to: data_set_path(@conn, :index), class: "btn btn-info pull-right float-right", style: "margin-right:20px" %>
+</h1>
 
-  <div class="row">
-    <em>This data set was last updated on <%= @data_set.updated_at %></em>
-  </div>
+<div class="row">
+  <em>This data set was last updated on <%= fmt_ndt(@data_set.updated_at) %></em>
+</div>
 
-  <h3 class="h3">
-    Data Set Provenance
-  </h3>
+<h2 class="h2">
+  General Information
+</h2>
 
-  <div class="row">
-    <table class="table">
-      <tbody>
-        <tr>
-          <th>Source</th>
-          <td>
-            <%= link @data_set.source_url, to: @data_set.source_url, target: "_blank" %>
-          </td>
-        </tr>
-        <tr>
-          <th>Data Starts On</th>
-          <td><%= @data_set.data_start_date || "-" %></td>
-        </tr>
-        <tr>
-          <th>Data Ends On</th>
-          <td><%= @data_set.data_end_date || "-" %></td>
-        </tr>
-        <tr>
-          <th>Latest Data Tarball Created On</th>
-          <td><%= @data_set.latest_creation_date || "-" %></td>
-        </tr>
-        <tr>
-          <th>Data Tarball Format Version</th>
-          <td><%= @data_set.latest_data_format_version || "-" %></td>
-        </tr>
-        <tr>
-          <th>All Metadata</th>
-          <td>
-            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.metadata.tar", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.metadata.tar", target: "_blank" %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="row">
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>Source</th>
+        <td>
+          <%= link @data_set.mcs_source_url, to: @data_set.mcs_source_url, target: "_blank" %>
+        </td>
+      </tr>
+      <tr>
+        <th>Data Starts On</th>
+        <td><%= fmt_ndt(@data_set.data_start_date) %></td>
+      </tr>
+      <tr>
+        <th>Data Ends On</th>
+        <td><%= fmt_ndt(@data_set.data_end_date) %></td>
+      </tr>
+      <tr>
+        <th>Latest Data Tarball Created On</th>
+        <td><%= fmt_ndt(@data_set.latest_creation_date) %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-  <h3 class="h3">
-    Data Set Slice Downloads
-  </h3>
+<h2 class="h2">
+  Data Set Slice Downloads
+</h2>
 
-  <div class="row">
-    <table class="table">
-      <tbody>
-        <tr>
-          <th>Past 24 Hours</th>
-          <td>
-            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-day.csv.gz", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-day.csv.gz", target: "_blank" %>
-            <br><span class="small">Refreshes every day.</span>
-          </td>
-        </tr>
-        <tr>
-          <th>Past Week</th>
-          <td>
-            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-week.csv.gz", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-week.csv.gz", target: "_blank" %>
-            <br><span class="small">Refreshes every Sunday.</span>
-          </td>
-        </tr>
-        <tr>
-          <th>Past 2 Weeks</th>
-          <td>
-            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.2-weeks.csv.gz", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.2-weeks.csv.gz", target: "_blank" %>
-            <br><span class="small">Refreshes every other Sunday.</span>
-          </td>
-        </tr>
-        <tr>
-          <th>Past Month</th>
-          <td>
-            <%= link "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-month.csv.gz", to: "https://s3.amazonaws.com/aot-tarballs/#{@data_set.slug}.1-month.csv.gz", target: "_blank" %>
-            <br><span class="small">Refreshes every first of the month.</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="row">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Slice</th>
+        <th>Link</th>
+        <th>Created</th>
+        <th>Expires</th>
+        <th>Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for slice <- Afb.DataSet.DataSet.daily_slices(@data_set) do %>
+      <tr>
+        <td>Daily</td>
+        <td><%= link Afb.DataSet.Slice.make_link(slice), to: Afb.DataSet.Slice.make_link(slice), target: "_blank" %></td>
+        <td><%= fmt_ndt(slice.last_modified) %></td>
+        <td><%= fmt_ndt(slice.expiry_date) %></td>
+        <td><%= slice.size %></td>
+      </tr>
+      <% end %>
+      <%= for slice <- Afb.DataSet.DataSet.weekly_slices(@data_set) do %>
+      <tr>
+        <td>Weekly</td>
+        <td><%= link Afb.DataSet.Slice.make_link(slice), to: Afb.DataSet.Slice.make_link(slice), target: "_blank" %></td>
+        <td><%= fmt_ndt(slice.last_modified) %></td>
+        <td><%= fmt_ndt(slice.expiry_date) %></td>
+        <td><%= slice.size %></td>
+      </tr>
+      <% end %>
+      <%= for slice <- Afb.DataSet.DataSet.monthly_slices(@data_set) do %>
+      <tr>
+        <td>Monthly</td>
+        <td><%= link Afb.DataSet.Slice.make_link(slice), to: Afb.DataSet.Slice.make_link(slice), target: "_blank" %></td>
+        <td><%= fmt_ndt(slice.last_modified) %></td>
+        <td><%= fmt_ndt(slice.expiry_date) %></td>
+        <td><%= slice.size %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-  <h3 class="h3">
-    Node Information
-    <%= link "Download", to: data_set_path(@conn, :download_nodes_csv, @data_set), class: "btn btn-success pull-right float-right" %>
-    <button id="node-info-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Table</button>
-  </h3>
+<h2 class="h2">
+  Node Information
+  <button id="node-info-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Table</button>
+</h2>
 
-  <div class="row col-12 table-responsive" id="node-info" hidden>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <%= for h <- @node_headers do %>
-          <th><%= h %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <%= for row <- @node_body do %>
-        <tr>
-          <%= for cell <- row do %>
-          <td><%= cell %></td>
-          <% end %>
-        </tr>
+<div class="row table-responsive" id="node-info" hidden>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <%= for h <- @node_headers do %>
+        <th><%= h %></th>
         <% end %>
-      </tbody>
-    </table>
-  </div>
-
-  <h3 class="h3">
-    Sensor Information
-    <%= link "Download", to: data_set_path(@conn, :download_sensors_csv, @data_set), class: "btn btn-success pull-right float-right" %>
-    <button id="sensor-info-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Table</button>
-  </h3>
-
-  <div class="row col-12 table-responsive" id="sensor-info" hidden>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <%= for h <- @sensor_headers do %>
-          <th><%= h %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <%= for row <- @sensor_body do %>
-        <tr>
-          <%= for cell <- row do %>
-          <td nowrap><%= cell %></td>
-          <% end %>
-        </tr>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for row <- @node_body do %>
+      <tr>
+        <%= for cell <- row do %>
+        <td><%= cell %></td>
         <% end %>
-      </tbody>
-    </table>
-  </div>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-  <h3 class="h3">
-    Tarball README File
-    <%= link "Download", to: data_set_path(@conn, :download_readme, @data_set), class: "btn btn-success pull-right float-right" %>
-    <button id="readme-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Contents</button>
-  </h3>
+<h2 class="h2">
+  Sensor Information
+  <button id="sensor-info-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Table</button>
+</h2>
 
-  <div class="row" id="readme" hidden>
-    <pre style="background:#dfefef;padding:10px;">
-      <%= @data_set.readme %>
-    </pre>
-  </div>
+<div class="row table-responsive" id="sensor-info" hidden>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <%= for h <- @sensor_headers do %>
+        <th><%= h %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for row <- @sensor_body do %>
+      <tr>
+        <%= for cell <- row do %>
+        <td nowrap><%= cell %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="h2">
+  Tarball README File
+  <button id="readme-btn" class="btn btn-info pull-right float-right" style="margin-right:20px">Show Contents</button>
+</h2>
+
+<div class="row" id="readme" hidden>
+  <pre>
+    <%= @data_set.readme %>
+  </pre>
 </div>
 
 <script>
-const confirmDelete = function () {
-  return confirm("Are you sure you want to delete <%= @data_set.name %>?");
-}
-
 document.getElementById('node-info-btn').addEventListener('click', function () {
   let nodeInfo = document.getElementById('node-info');
   if (nodeInfo.hidden) {

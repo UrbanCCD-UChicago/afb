@@ -59,6 +59,9 @@ defmodule Afb.Mixfile do
       {:csv, "~> 2.1"},
       {:timex, "~> 3.3"},
 
+      # scheduler
+      {:quantum, "~> 2.2"},
+
       # deployments
       {:distillery, "~> 1.5"},
       {:sentry, "~> 6.2.1"},

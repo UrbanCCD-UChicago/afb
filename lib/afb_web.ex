@@ -24,6 +24,9 @@ defmodule AfbWeb do
       import AfbWeb.Router.Helpers
       import AfbWeb.ErrorHelpers
       import AfbWeb.Gettext
+
+      def fmt_ndt(nil), do: "-"
+      def fmt_ndt(n), do: Timex.format!(n, "%d %b %Y, %H:%M:%S UTC", :strftime)
     end
   end
 

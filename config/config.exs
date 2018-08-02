@@ -30,10 +30,6 @@ config :afb, Afb.Repo,
   hostname: "localhost",
   pool_size: 10
 
-config :afb, Afb.Auth.Guardian,
-  issuer: "AoT File Browser",
-  secret_key: "change me"
-
 config :ex_aws,
   access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, {:awscli, "default", 30}, :instance_role],
   secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, {:awscli, "default", 30}, :instance_role]
@@ -44,5 +40,11 @@ config :ex_aws, :hackney_opts,
 
 config :ex_aws,
   region: "us-east-1"
+
+config :afb, Afb.Scheduler,
+  global: true,
+  jobs: [
+    {"*/5 * * * *", {Afb.Scheduler, :run, []}},
+  ]
 
 import_config "#{Mix.env}.exs"

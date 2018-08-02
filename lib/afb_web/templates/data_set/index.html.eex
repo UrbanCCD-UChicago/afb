@@ -4,12 +4,6 @@
   </h1>
 </div>
 
-<%= if @conn.assigns.current_user do %>
-<div class="row col-12">
-  <%= link "New Data Set", to: data_set_path(@conn, :new), class: "btn btn-success" %>
-</div>
-<% end %>
-
 <div class="row col-12">
   <p>
     Below is the list of available Array of Things network data sets.
