@@ -1,3 +1,0 @@
-0 1 * * * /usr/bin/env bash /home/vforgione/cron-daily.bash
-0 2 * * 0 /usr/bin/env bash /home/vforgione/cron-weekly.bash
-0 3 1 * * /usr/bin/env bash /home/vforgione/cron-monthly.bash
