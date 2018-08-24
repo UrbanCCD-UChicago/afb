@@ -93,12 +93,12 @@ tar cf $tarball $renamed
 rm -r $renamed
 
 echo "uploading the slice tarball to s3"
-aws s3 cp $tarball s3://aot-tarballs/ --quiet
-aws s3api put-object-tagging --bucket aot-tarballs --key $tarball --tagging "TagSet=[{Key=slice,Value=daily}]"
+/home/vforgione/.local/bin/aws s3 cp $tarball s3://aot-tarballs/ --quiet
+/home/vforgione/.local/bin/aws s3api put-object-tagging --bucket aot-tarballs --key $tarball --tagging "TagSet=[{Key=slice,Value=daily}]"
 rm $tarball
 
 echo "notifying afb to update metadata"
-curl --silent http://$afb_hostname/data-sets/$slug/process?archive=$tarball
+curl --silent https://$afb_hostname/data-sets/$slug/process?archive=$tarball
 
 cd $pwd
 
