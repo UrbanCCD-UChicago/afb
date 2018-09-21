@@ -4,11 +4,11 @@ defmodule Afb.Mixfile do
   def project do
     [
       app: :afb,
-      version: "0.2.0",
+      version: "0.2.1",
       elixir: "~> 1.6",
-      elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
     ]
@@ -26,7 +26,7 @@ defmodule Afb.Mixfile do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -64,13 +64,13 @@ defmodule Afb.Mixfile do
 
       # deployments
       {:distillery, "~> 1.5"},
-      {:sentry, "~> 6.2.1"},
+      {:sentry, "~> 6.2.1"}
     ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
   # For example, to create, migrate and run the seeds file at once:
-  #{:configparser_ex, "~> 2.0"}
+  # {:configparser_ex, "~> 2.0"}
   #     $ mix ecto.setup
   #
   # See the documentation for `Mix` for more info on aliases.
@@ -78,7 +78,7 @@ defmodule Afb.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

@@ -32,6 +32,15 @@
           Waggle Data Tools: A suite of tools to slice and dice data set tarballs
         </a>
       </li>
+      <li>
+        <a href="https://geodacenter.github.io/aot-workshop/" target="_blank">
+          UChicago Spatial Data Sciences Center: Mapping AOT Data with Spatial Statistics (R/R-Markdown) (Tutorial)
+        </a>
+      </li><li>
+        <a href="https://github.com/ddiLab/CommunitySensing" target="_blank">
+          NIU Data, Device, and Integration Laboratory: Community Sensing (Python, Jupyter Notebook) (Tutorial)
+        </a>
+      </li>
     </ul>
   </div>
 </div>
