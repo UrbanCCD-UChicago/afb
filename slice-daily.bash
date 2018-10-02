@@ -57,7 +57,7 @@ pwd=`pwd`
 cd $workdir
 
 echo "downloading tarball from mcs"
-wget --quiet http://www.mcs.anl.gov/research/projects/waggle/downloads/datasets/$dataset.latest.tar
+wget --quiet --no-check-certificate https://www.mcs.anl.gov/research/projects/waggle/downloads/datasets/$dataset.latest.tar
 
 tarball=$dataset.latest.tar
 
