@@ -106,4 +106,7 @@ defmodule Afb.DataSet.DataSet do
     |> Enum.filter(& Timex.compare(now, &1.expiry_date) == -1)
     |> Enum.sort(&(&1.key < &2.key))
   end
+
+  def get_recent_url(%DataSet{mcs_source_url: url}),
+    do: String.replace(url, ".latest.tar", ".recent.csv")
 end

@@ -52,6 +52,13 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td>Recent</td>
+        <td><%= link Afb.DataSet.DataSet.get_recent_url(@data_set), to: Afb.DataSet.DataSet.get_recent_url(@data_set), target: "_blank" %></td>
+        <td>Within the last 5 minutes</td>
+        <td>Less than 5 minutes</td>
+        <td>&nbsp;</td>
+      </tr>
       <%= for slice <- Afb.DataSet.DataSet.daily_slices(@data_set) do %>
       <tr>
         <td>Daily</td>
