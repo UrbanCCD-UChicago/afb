@@ -47,4 +47,8 @@ config :afb, Afb.Scheduler,
     {"*/5 * * * *", {Afb.Scheduler, :run, []}},
   ]
 
+config :sentry, dsn: "https://public_key@app.getsentry.com/1",
+  included_environments: [:prod],
+  environment_name: Mix.env
+
 import_config "#{Mix.env}.exs"

@@ -1,5 +1,7 @@
 defmodule AfbWeb.Router do
   use AfbWeb, :router
+  use Plug.ErrorHandler
+  use Sentry.Plug
 
   pipeline :browser do
     plug :accepts, ["html"]

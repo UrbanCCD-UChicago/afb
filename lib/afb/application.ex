@@ -10,6 +10,8 @@ defmodule Afb.Application do
       supervisor(Afb.Scheduler, []),
     ]
 
+    :ok = :error_logger.add_report_handler(Sentry.Logger)
+
     opts = [strategy: :one_for_one, name: Afb.Supervisor]
     Supervisor.start_link(children, opts)
   end

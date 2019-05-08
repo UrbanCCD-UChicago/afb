@@ -4,7 +4,7 @@ defmodule Afb.Mixfile do
   def project do
     [
       app: :afb,
-      version: "0.2.3",
+      version: "0.3.0",
       elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -20,7 +20,7 @@ defmodule Afb.Mixfile do
   def application do
     [
       mod: {Afb.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:sentry, :logger, :runtime_tools]
     ]
   end
 
