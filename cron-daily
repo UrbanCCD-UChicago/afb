@@ -29,13 +29,6 @@
   --afb-hostname aot-file-browser.plenar.io
 
 /bin/bash /home/vforgione/slice-daily.bash \
-  --dataset AoT_Detroit.complete \
-  --slug detroit-complete \
-  --workdir /storage/afb \
-  --slice-tool-path /home/vforgione/slice-date-range.py \
-  --afb-hostname aot-file-browser.plenar.io
-
-/bin/bash /home/vforgione/slice-daily.bash \
   --dataset AoT_Portland.complete \
   --slug portland-complete \
   --workdir /storage/afb \
@@ -64,15 +57,15 @@
   --afb-hostname aot-file-browser.plenar.io
 
 /bin/bash /home/vforgione/slice-daily.bash \
-  --dataset AoT_Chicago.public \
-  --slug chicago-public \
-  --workdir /storage/afb \
-  --slice-tool-path /home/vforgione/slice-date-range.py \
-  --afb-hostname aot-file-browser.plenar.io
-
-/bin/bash /home/vforgione/slice-daily.bash \
   --dataset AoT_Chicago.complete \
   --slug chicago-complete \
   --workdir /storage/afb \
   --slice-tool-path /home/vforgione/slice-date-range.py \
+  --afb-hostname aot-file-browser.plenar.io
+
+/bin/bash /home/vforgione/afb/slice-daily.bash \
+  --dataset AoT_GA_Tech.complete \
+  --slug ga-tech \
+  --workdir /storage/afb \
+  --slice-tool-path /home/vforgione/afb/slice-date-range.py \
   --afb-hostname aot-file-browser.plenar.io
